@@ -6,9 +6,11 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { useSelector } from "react-redux";
-//import { Link } from "react-router-dom";
+import { selectPhoto } from "../Slices/user/userSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+  const photo = useSelector(selectPhoto)
   return (
     <Container>
       <Wrapper>
@@ -30,7 +32,7 @@ const Header = () => {
             <SettingsOutlinedIcon/>
           </LeftSection>
           <RightSection>
-            <AppsOutlinedIcon /><Avatar />
+            <AppsOutlinedIcon /><Avatar src={photo} />
           </RightSection>
         </RightContainer>
       </Wrapper>

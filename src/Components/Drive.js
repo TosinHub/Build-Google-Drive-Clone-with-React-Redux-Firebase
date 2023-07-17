@@ -5,18 +5,39 @@ import FileList from "./FileList";
 import FileContainer from "./FileContainer";
 import { useDispatch } from "react-redux";
 import { setBoolean } from "../Slices/Bool/boolSlice";
-//import db from "../firebase/firebase";
+import db from "../firebase/firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 //import { setFolder } from "../Slices/channel/channelSlice";
 
 const Drive = () => {
+  const dispatch = useDispatch();
+  const [folders, setFolders] = useState([]);
+  const [fileData, setFileData] = useState([]);
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    return onSnapshot(
+      query(collection(db, "folder"), orderBy("timestamp", "asc")),
+      (snapshot) => setFolders(snapshot.docs)
+    );
+  }, []);
+  useEffect(() => {
+    return onSnapshot(
+      query(collection(db, "post"), orderBy("timestamp", "asc")),
+      (snapshot) => setFileData(snapshot.docs)
+    );
+  }, []);
+
   return (
-    <Container onClick={()=> dispatch(setBoolean({
-      modelBools: false
-    }))}>
-            <Title>
+    <Container
+      onClick={() =>
+        dispatch(
+          setBoolean({
+            modelBools: false,
+          })
+        )
+      }
+    >
+      <Title>
         <span>My Drive</span>
         <ArrowDropDownIcon />
       </Title>
@@ -24,24 +45,36 @@ const Drive = () => {
         <SemiTitle>Suggested</SemiTitle>
 
         <GridContainer>
-               <FileList/>
+          {fileData?.map((file) => (
+            <FileList
+              key={file?.id}
+              id={file?.id}
+              img={file?.data().Image}
+              uid={file?.data().uid}
+              title={file?.data().photoTitle}
+              
+            />
+          ))}
         </GridContainer>
         <Margin>
           <SemiTitle>Folders</SemiTitle>
 
           <GridContainer>
-                <FileContainer/>
+            {folders.map((folder) => (
+              <FileContainer
+                key={folder.id}
+                id={folder.id}
+                title={folder?.data().name}
+              />
+            ))}
           </GridContainer>
         </Margin>
       </FileContent>
-
-
     </Container>
-  )
-}
+  );
+};
 
-export default Drive
-
+export default Drive;
 
 const Container = styled.div`
   flex-grow: 1;

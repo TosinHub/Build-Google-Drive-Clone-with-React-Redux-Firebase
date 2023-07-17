@@ -2,13 +2,13 @@ import { InsertPhoto } from "@mui/icons-material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-//import { setPhotoDisplay } from "../Slices/photodisplay/photoSlice";
+import { setPhotoDisplay } from "../Slices/photodisplay/photoSlice";
 
 function FileList({ img, title }) {
   const dispatch = useDispatch();
 
   const PhotoSelector = () => {
-  //  dispatch(setPhotoDisplay({ photo: img, title: title }));
+   dispatch(setPhotoDisplay({ photo: img, title: title }));
   };
   return (
     <Container>

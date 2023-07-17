@@ -11,13 +11,13 @@ function Model() {
     <Container bool={selectModel}>
       <Wrapper>
         <Header>
-          <Wraps onClick={() => dispatch()}>
+          <Wraps onClick={() => dispatch(setBoolean({folderBool: true}))}>
             <CreateNewFolder />
             <span>Folder</span>
           </Wraps>
         </Header>
         <Header>
-          <Wraps onClick={() => dispatch()}>
+          <Wraps onClick={() => dispatch(setBoolean({photo: true}))}>
             <AddPhotoAlternate />
             <span>Photo</span>
           </Wraps>
