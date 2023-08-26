@@ -3,15 +3,15 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-//import { setFolder } from "../Slices/channel/channelSlice";
+import { setFolder } from "../Slices/folder/folderSlice";
 
-function FileContainer({ title, id }) {
+function FolderContainer({ title, id }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const SelectChannel = () => {
     if (id) {
-     // dispatch(setFolder({ folderId: id, folderName: title }));
+     dispatch(setFolder({ folderId: id, folderName: title }));
       navigate(`/folder/${title}/${id}`);
     }
   };
@@ -23,7 +23,7 @@ function FileContainer({ title, id }) {
   );
 }
 
-export default FileContainer;
+export default FolderContainer;
 
 const Container = styled.div`
   width: 287.5px;

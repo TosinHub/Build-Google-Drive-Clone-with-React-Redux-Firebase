@@ -12,18 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import db, { storage } from "../firebase/firebase";
 import { selectPhotoBool, setBoolean } from "../Slices/Bool/boolSlice";
-//import { selectFolderId } from "../Slices/channel/channelSlice";
+import { selectFolderId } from "../Slices/folder/folderSlice";
 import { selectUid } from "../Slices/user/userSlice";
 
-function PhotoModel() {
+function PhotoModal() {
   const [input, setInput] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const ImageRef = useRef(null);
   const Photo = useSelector(selectPhotoBool);
   const [loading, setLoading] = useState(false);
   const uid = useSelector(selectUid);
-  //const folderId = useSelector(selectFolderId);
-  const folderId = 1
+  const folderId = useSelector(selectFolderId);
+
 
   const dispatch = useDispatch();
 
@@ -35,28 +35,28 @@ function PhotoModel() {
 
     if (input.length < 1) return;
 
-    // if (folderId) {
-    //   const doces = await addDoc(
-    //     collection(db, "folder", folderId, "folderTree"),
-    //     {
-    //       uid: uid,
-    //       photoTitle: input,
-    //       timestamp: serverTimestamp(),
-    //     }
-    //   );
+    if (folderId) {
+      const doces = await addDoc(
+        collection(db, "folder", folderId, "folderTree"),
+        {
+          uid: uid,
+          photoTitle: input,
+          timestamp: serverTimestamp(),
+        }
+      );
 
-    //   const images = ref(storage, `folder/${folderId}/${doces.id}image`);
+      const images = ref(storage, `folder/${folderId}/${doces.id}image`);
 
-    //   await uploadString(images, selectedImage, "data_url").then(
-    //     async (snapshot) => {
-    //       const downloadUrl = await getDownloadURL(images);
+      await uploadString(images, selectedImage, "data_url").then(
+        async (snapshot) => {
+          const downloadUrl = await getDownloadURL(images);
 
-    //       await updateDoc(doc(db, "folder", folderId, "folderTree", doces.id), {
-    //         Image: downloadUrl,
-    //       });
-    //     }
-    //   );
-    // } else {
+          await updateDoc(doc(db, "folder", folderId, "folderTree", doces.id), {
+            Image: downloadUrl,
+          });
+        }
+      );
+    } else {
       const docs = await addDoc(collection(db, "post"), {
         uid: uid,
         photoTitle: input,
@@ -74,7 +74,7 @@ function PhotoModel() {
           });
         }
       );
-    //}
+    }
 
     setSelectedImage(null);
     setInput("");
@@ -132,7 +132,7 @@ function PhotoModel() {
   );
 }
 
-export default PhotoModel;
+export default PhotoModal;
 
 const Container = styled.div`
   z-index: 9999;

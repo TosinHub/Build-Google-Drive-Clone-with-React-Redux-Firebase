@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import FileList from "./FileList";
-import FileContainer from "./FileContainer";
+import FolderContainer from "./FolderContainer";
 import { useDispatch } from "react-redux";
 import { setBoolean } from "../Slices/Bool/boolSlice";
 import db from "../firebase/firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-//import { setFolder } from "../Slices/channel/channelSlice";
+import { setFolder } from "../Slices/folder/folderSlice";
 
 const Drive = () => {
   const dispatch = useDispatch();
   const [folders, setFolders] = useState([]);
   const [fileData, setFileData] = useState([]);
+
+  useEffect(() => {
+    dispatch(setFolder({ folderId: null, folderName: null }));
+  }, [dispatch]);
 
   useEffect(() => {
     return onSnapshot(
@@ -61,7 +65,7 @@ const Drive = () => {
 
           <GridContainer>
             {folders.map((folder) => (
-              <FileContainer
+              <FolderContainer
                 key={folder.id}
                 id={folder.id}
                 title={folder?.data().name}

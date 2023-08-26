@@ -15,6 +15,7 @@ const Header = () => {
     <Container>
       <Wrapper>
         <Logo>
+          <Link to="/" />
           <img src="/img/logo192.png" alt="Logo" />
           <span>Drive</span>
         </Logo>
